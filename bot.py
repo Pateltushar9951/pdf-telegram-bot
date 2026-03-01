@@ -9,11 +9,7 @@ from telegram.ext import (
 )
 from PIL import Image
 
-# Read token from environment variable
-TOKEN = os.environ.get("BOT_TOKEN")
-
-if not TOKEN:
-    raise ValueError("BOT_TOKEN environment variable not set")
+TOKEN = "8349740296:AAFSTCraaxpgTA_Us1hD0vLBfwGOPOFO10I"
 
 # User state storage
 user_images = {}
@@ -26,6 +22,7 @@ pending_add = {}
 # -----------------------------
 async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.from_user.id
+
     file = None
 
     # If sent as PHOTO
@@ -44,7 +41,7 @@ async def handle_media(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         return
 
-    # If waiting for image to insert
+    # If waiting for insert image
     if user_id in pending_add and pending_add[user_id] == "waiting_for_image":
         file_path = f"{user_id}_insert.jpg"
         await file.download_to_drive(file_path)
@@ -138,10 +135,10 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         img_doc = fitz.open(temp_img_pdf)
 
-        # Insert image page at given position
+        # Insert image page at position
         doc.insert_pdf(img_doc, start_at=page_number)
 
-        # Safe Save (no incremental error)
+        # Safe Save
         temp_final = f"{user_id}_temp.pdf"
         doc.save(temp_final)
         doc.close()
@@ -151,6 +148,7 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
             os.remove(original_pdf_path)
 
         os.rename(temp_final, original_pdf_path)
+
         os.remove(temp_img_pdf)
 
         pending_add[user_id] = "waiting_for_image"
@@ -181,4 +179,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
