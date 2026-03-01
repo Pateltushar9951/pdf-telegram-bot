@@ -10,7 +10,7 @@ from telegram.ext import (
 from PIL import Image
 
 # Read token from environment variable
-TOKEN = os.environ.get("8349740296:AAFSTCraaxpgTA_Us1hD0vLBfwGOPOFO10I")
+TOKEN = os.environ.get("BOT_TOKEN")
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable not set")
@@ -181,3 +181,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
